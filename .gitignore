@@ -1,0 +1,4 @@
+/env
+/.idea
+**/migrations
+db.sqlite3
