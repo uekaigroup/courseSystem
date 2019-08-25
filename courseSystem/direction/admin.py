@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Stage,Major
+from teachers.models import Teacher
 
 # Register your models here.
 
@@ -9,21 +10,34 @@ class TeacherInline(admin.TabularInline):
     extra = 0
     classes = ("collapse",)
 
-# 阶段
+# 阶段后台
 @admin.register(Stage)
 class StageAdmin(admin.ModelAdmin):
     exclude = []
     inlines = [TeacherInline]
     list_display = ['name','major','hour','show_teacher']
+    list_filter = ('name','major','hour')
     fieldsets = (("专业编辑",{
             'fields':('name','major','hour')
         },),)
     def show_teacher(self,obj):
-        print(obj.teacher)
-        return "this is teacher"
 
-# 专业
+        return [item for item in obj.teacher.all()]
+
+
+# 方向阶段内联表对象
+class MajorStageInline(admin.TabularInline):
+    model = Stage
+    extra = 6
+    classes = ("collapse",)
+
+
+# 专业后台
 @admin.register(Major)
 class MojorAdmin(admin.ModelAdmin):
     exclude = []
-    list_display = ['name']
+    list_display = ['name',"show_stage"]
+    inlines = [MajorStageInline,]
+    def show_stage(self,obj):
+        print(obj.stage_set.all())
+        return [ item for item in obj.stage_set.all()]

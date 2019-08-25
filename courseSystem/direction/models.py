@@ -14,8 +14,8 @@ class Major(models.Model):
 
 # 阶段
 class Stage(models.Model):
-    major = models.ForeignKey(to='Major', on_delete=models.CASCADE,verbose_name="专业")
     name = models.CharField(max_length=10,verbose_name="阶段")
+    major = models.ForeignKey(to='Major', on_delete=models.CASCADE,verbose_name="专业")
     hour = models.IntegerField(default=40,verbose_name="课时")
     teacher = models.ManyToManyField(to="teachers.Teacher", through='teachers.TeacherStage')
     class Meta:
