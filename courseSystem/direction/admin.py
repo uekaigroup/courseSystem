@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Stage,Major
+from .models import Stage,Major,StagePriority,Classroom
 from teachers.models import Teacher
 
 # Register your models here.
@@ -41,3 +41,15 @@ class MojorAdmin(admin.ModelAdmin):
     def show_stage(self,obj):
         print(obj.stage_set.all())
         return [ item for item in obj.stage_set.all()]
+
+# 老师阶段优先级
+@admin.register(StagePriority)
+class StagePriorityAdmin(admin.ModelAdmin):
+    exclude = []
+
+
+# 教师
+@admin.register(Classroom)
+class StagePriorityAdmin(admin.ModelAdmin):
+    exclude = []
+

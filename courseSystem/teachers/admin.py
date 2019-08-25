@@ -28,4 +28,7 @@ class TeacherStage(admin.ModelAdmin):
     list_display = ['teacher','stage','priority','num']
     list_filter = ['stage',"priority",'num']
 
+# 老师阶段优先级
+# @admin.register(StagePriority)
+
 
