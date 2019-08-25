@@ -14,7 +14,7 @@ class Major(models.Model):
 
 # 阶段
 class Stage(models.Model):
-    name = models.CharField(max_length=10,verbose_name="阶段")
+    name = models.CharField(max_length=40,verbose_name="阶段")
     major = models.ForeignKey(to='Major', on_delete=models.CASCADE,verbose_name="专业")
     hour = models.IntegerField(default=40,verbose_name="课时")
     teacher = models.ManyToManyField(to="teachers.Teacher", through='teachers.TeacherStage')
@@ -28,7 +28,7 @@ class Stage(models.Model):
 class StagePriority(models.Model):
     pre_course = models.ForeignKey(to='Stage',verbose_name="前导阶段",on_delete=models.CASCADE,related_name='pre_course')
     next_course = models.ForeignKey(to="Stage",verbose_name="后续阶段",on_delete=models.CASCADE,related_name="next_course")
-    priority = models.FloatField(default=0,verbose_name="优先级",choices=((0.0, 0.0),(0.1, 0.1),(0.2, 0.2),(0.3, 0.3),(0.4, 0.4),(0.5, 0.5),(0.6, 0.6),(0.7, 0.7),(0.8, 0.8),(0.9, 0.9),(1.0, 1.0),))
+    priority = models.FloatField(default=0,verbose_name="优先级",choices=((1.0,1.0),(0.9,0.9),(0.8,0.8),(0.7,0.7),(0.6,0.6),(0.5,0.5),(0.4,0.4),(0.3,0.3),(0.2,0.2),(0.1,0.1),(0.0,0.0)))
 
     class Meta:
         verbose_name_plural = "布道师阶段优先级"

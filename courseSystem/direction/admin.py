@@ -16,12 +16,11 @@ class StageAdmin(admin.ModelAdmin):
     exclude = []
     inlines = [TeacherInline]
     list_display = ['name','major','hour','show_teacher']
-    list_filter = ('name','major','hour')
+    list_filter = ('major','hour')
     fieldsets = (("专业编辑",{
             'fields':('name','major','hour')
         },),)
     def show_teacher(self,obj):
-
         return [item for item in obj.teacher.all()]
 
 
@@ -40,16 +39,17 @@ class MojorAdmin(admin.ModelAdmin):
     inlines = [MajorStageInline,]
     def show_stage(self,obj):
         print(obj.stage_set.all())
-        return [ item for item in obj.stage_set.all()]
+        return [ '%s(%s)'%(item.name,item.hour) for item in obj.stage_set.all()]
 
 # 老师阶段优先级
 @admin.register(StagePriority)
 class StagePriorityAdmin(admin.ModelAdmin):
     exclude = []
+    list_display = ['pre_course','next_course','priority']
 
 
 # 教师
 @admin.register(Classroom)
-class StagePriorityAdmin(admin.ModelAdmin):
+class ClassroomAdmin(admin.ModelAdmin):
     exclude = []
 
