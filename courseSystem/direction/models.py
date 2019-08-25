@@ -28,7 +28,7 @@ class Stage(models.Model):
 class StagePriority(models.Model):
     pre_course = models.ForeignKey(to='Stage',verbose_name="前导阶段",on_delete=models.CASCADE,related_name='pre_course')
     next_course = models.ForeignKey(to="Stage",verbose_name="后续阶段",on_delete=models.CASCADE,related_name="next_course")
-    priority = models.IntegerField(default=0,verbose_name="优先级",choices=((0.0, 0.0),(0.1, 0.1),(0.2, 0.2),(0.3, 0.3),(0.4, 0.4),(0.5, 0.5),(0.6, 0.6),(0.7, 0.7),(0.8, 0.8),(0.9, 0.9),(1.0, 1.0),))
+    priority = models.FloatField(default=0,verbose_name="优先级",choices=((0.0, 0.0),(0.1, 0.1),(0.2, 0.2),(0.3, 0.3),(0.4, 0.4),(0.5, 0.5),(0.6, 0.6),(0.7, 0.7),(0.8, 0.8),(0.9, 0.9),(1.0, 1.0),))
 
     class Meta:
         verbose_name_plural = "布道师阶段优先级"
