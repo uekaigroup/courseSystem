@@ -40,3 +40,5 @@ class Classroom(models.Model):
     class Meta:
         verbose_name_plural = "教室表"
         verbose_name = "教室表"
+    def __str__(self):
+        return self.name
