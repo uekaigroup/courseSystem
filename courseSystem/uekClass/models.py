@@ -93,12 +93,13 @@ class Classes(models.Model):
     is_end = models.IntegerField(choices=(
         (0, '未结训'),
         (1, '已结训')),
-        default=0, verbose_name='是否校外课程'
+        default=0, verbose_name='是否结训'
     )
     endstages=models.CharField(
         max_length=50,
         verbose_name='已完成阶段',
-        help_text='例如:ps-软件设计'
+        help_text='例如:ps-软件设计',
+        default='暂无'
     )
     now_week=models.IntegerField(
         verbose_name='周数',
@@ -118,12 +119,18 @@ class Classes(models.Model):
 class OutClasses(models.Model):
     name=models.CharField(
         max_length=20,
-        verbose_name='校外班级表'
+        verbose_name='班名'
     )
-    time=models.DateField('开始时间',default=timezone.now)
-    data=models.CharField(
-        max_length=50,
-        verbose_name='课程内容'
+    data = models.CharField(
+        max_length=200,
+        verbose_name='课程数据',
+        help_text='例如:0-5,全栈-2(表示前五天不上，周六日上全栈课程)',
+        default='暂无'
+    )
+    time = models.IntegerField(
+        verbose_name='周数',
+        default=0,
+        help_text='例如:201934,表示2019年第34周'
     )
     def __str__(self):
         return self.name
