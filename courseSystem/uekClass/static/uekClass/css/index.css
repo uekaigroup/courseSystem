@@ -1,0 +1,22 @@
+*{
+    padding: 0;
+    margin:0;
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+img{
+    display: block;
+}
+h1{
+    text-align: center;
+    color: cornflowerblue;
+    margin-top: 30px;
+}
+.sys{
+    width: 800px;
+    height: auto;
+    border: 1px solid cornflowerblue;
+    margin:0 auto;
+}

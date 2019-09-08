@@ -1,13 +1,300 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>优逸客智能排课系统</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="{% static 'uekClass/js/jquery.js' %}"></script>
 </head>
+<style>
+    .title{
+        text-align: center;
+        padding:50px 0;
+        color:#337FE5;
+    }
+    .menu{
+        width:40px;
+        height:300px;
+        position:fixed;
+        top:0;
+        bottom:0;
+        left:20px;
+        margin:auto;
+        z-index: 99;
+    }
+    .menu .son{
+        width:40px;
+        height:40px;
+        color:#fff;
+        text-align:center;
+        line-height:40px;
+        margin-bottom:1px;
+        cursor: pointer;
+    }
+    .menu .son:hover{
+        opacity: 0.8;
+    }
+</style>
 <body>
-    index
+    <h2 class="title">
+        <img width="50" src="https://www7.53kf.com/img/upload/10198232/mobile/temp/mobile_53kf_1559615436.jpg" alt="">
+        山西优逸客智能排课系统
+    </h2>
+    <div class="menu">
+        <!--<div class="son" id= "pk" style="background-color:#62BAA2;">排课</div>-->
+        <div class="son son1" style="background-color:#93D1DE;">1</div>
+        <div class="son son1" style="background-color:#93D1DE;">2</div>
+        <div class="son son1" style="background-color:#93D1DE;">3</div>
+        <div class="son" id="edit" style="background-color:#C398A9;">编辑</div>
+        <!--<div class="son" style="background-color:#5597C9;">置顶</div>-->
+    </div>
+    <div class="main"></div>
+    <!-- <table class="table table-striped table-bordered" style="width:900px;" align="center" contentEditable="true"> -->
+        <!-- 表头 -->
+        <!-- <tr align="center">
+            <td rowspan="2"></td>
+            <td></td>
+            <td>周一</td>
+            <td>周二</td>
+            <td>周三</td>
+            <td>周四</td>
+            <td>周五</td>
+            <td>周六</td>
+            <td>周日</td>
+        </tr>
+        <tr align="center" class="date">
+            <td></td>
+            <td>8月21</td>
+            <td>8月21</td>
+            <td>8月22</td>
+            <td>8月23</td>
+            <td>8月24</td>
+            <td>8月25</td>
+            <td>8月26</td>
+        </tr> -->
+        <!-- 班级内容开始 -->
+        <!-- <tr align="center" class="zy">
+            <td rowspan="3" style="text-align:center;vertical-align:middle;">UAIF1907</td>
+            <td>课程内容</td>
+            <td>前端开发</td>
+            <td>前端开发</td>
+            <td>前端开发</td>
+            <td>前端开发</td>
+            <td>前端开发</td>
+            <td>前端开发</td>
+            <td>前端开发</td>
+        </tr>
+        <tr align="center" class="teacher">
+            <td>布道师</td>
+            <td>杨登辉</td>
+            <td>杨登辉</td>
+            <td>杨登辉</td>
+            <td>杨登辉</td>
+            <td>杨登辉</td>
+            <td>杨登辉</td>
+            <td>杨登辉</td>
+        </tr>
+        <tr align="center" class="js">
+            <td>班级</td>
+            <td>303</td>
+            <td>303</td>
+            <td>303</td>
+            <td>303</td>
+            <td>303</td>
+            <td>303</td>
+            <td>303</td>
+        </tr> -->
+        <!-- 班级内容结束 -->
+
+
+
+    </table>
 </body>
+<script>
+// {#let arr = [{'classname': 'UAIF1908', 'area': '205', 'stage': ['html,css(ai)'], 'long_time': [40], 'teacher': ['杨登辉']}, {'classname': 'UBDF1907', 'area': '502', 'stage': ['java'], 'long_time': [48], 'teacher': ['石永鑫']}, {'classname': 'MUIDF1907-2','area': '202', 'stage': ['平面'], 'long_time': [40], 'teacher': ['索晓勇']}, {'classname': 'WUIF1907', 'area': '201', 'stage': ['html,css(qz)'], 'long_time': [40], 'teacher': ['候宁州']}, {'classname': 'UAIF1907', 'area': '303', 'stage': ['html,css(ai)'], 'long_time': [40], 'teacher': ['刘涛']}]#}
+let url1 = "/getcourse/1/" // 排课
+let url2 = "/changecourse/1/" // 保存排课
+let data0 = ""
+$.ajax({
+    url:url1,
+    type:"get",
+    dataType:"json",
+    success:function(data){
+        data0 = data
+        render(data)
+    }
+});
+$(".son1").eq(0).css("background-color","red")
+$(".son1").click(function(){
+    index = $(this).index()
+    $(".son1").css("background-color","#93D1DE").eq(index).css("background-color","red")
+    url1 = `/getcourse/${index+1}/`
+    url2 = `/changecourse/${index+1}/`
+    $.ajax({
+        url:url1,
+        type:"get",
+        dataType:"json",
+        success:function(data){
+            data0 = data
+            render(data)
+        }
+    });
+})
+
+function getDate(time){
+    console.log(time)
+    let str = ""
+    time.forEach((item,index)=>{
+        str+=`<td>${time[index].slice(4,6)+'月'+time[index].slice(6,8)+"日"}</td>`
+    })
+    return str
+}
+
+function render(data){
+    $(".main").html("")
+    let str = `<table class="table table-striped table-bordered" style="width:900px;" align="center" contentEditable="false">
+    <tbody>
+        <tr align="center"><tr align="center">
+            <td rowspan="2"></td>
+            <td></td>
+            <td>周一</td>
+            <td>周二</td>
+            <td>周三</td>
+            <td>周四</td>
+            <td>周五</td>
+            <td>周六</td>
+            <td>周日</td>
+        </tr>
+        <tr align="center" class="date">
+            <td></td>
+            ${getDate(data.time)}
+        </tr>`
+
+    data.data.forEach((item,index)=>{
+        str+=`<tr align="center" class="kc">`
+        //班级
+        str+=`<td rowspan="3" style="text-align:center;vertical-align:middle;">${item.classname}</td><td>课程内容</td>`
+        let jd = item.stage ? item.stage[0] : "";
+        if(item.long_time[0]==40){
+            for(let i=0;i<5;i++){
+                str+=`<td  align="center">${jd}</td>`
+            }
+            str+="<td></td><td></td>"
+        }else if(item.long_time[0]==48){
+            for(let i=0;i<6;i++){
+                str+=`<td  align="center">${jd}</td>`
+            }
+            str+="<td></td>"
+        }
+        str+='</tr>'
+        //teacher
+        str+=`<tr align="center" class="teacher"><td>布道师</td>`
+
+        if(item.long_time[0]==40){
+            for(let i=0;i<5;i++){
+                str+=`<td  align="center">${item.teacher[0]}</td>`
+            }
+            str+="<td></td><td></td>"
+        }else if(item.long_time[0]==48){
+            for(let i=0;i<6;i++){
+                str+=`<td  align="center">${item.teacher[0]}</td>`
+            }
+            str+="<td></td>"
+        }
+        //area
+        str+=`<tr align="center" class="js"><td>教室</td>`
+
+        if(item.long_time[0]==40){
+            for(let i=0;i<5;i++){
+                str+=`<td>${item.area}</td>`
+            }
+            str+="<td></td><td></td>"
+        }else if(item.long_time[0]==48){
+            for(let i=0;i<6;i++){
+                str+=`<td>${item.area}</td>`
+            }
+            str+="<td></td>"
+        }
+        str+="</tr>"
+
+    })
+    str+="</tbody></table>"
+
+    $(str).appendTo(".main")
+
+}
+
+
+
+
+
+
+// 排课
+// {#$("#pk").click(function(){#}
+// {##}
+// {#    $.ajax({#}
+// {#<<<<<<< HEAD#}
+// {#        url:"/getcourse/2/",#}
+// {#=======#}
+// {#        url:url1,#}
+// {#>>>>>>> f3813b2adb375697db8c835f4e9b5f47a1d078ca#}
+// {#        type:"get",#}
+// {#        dataType:"json",#}
+// {#        success:function(data){#}
+// {#            data0 = data#}
+// {#            render(data)#}
+// {#        }#}
+// {#    });})#}
+
+
+let flag = true
+
+// 修改保存
+$("#edit").click(function(){
+    if(flag){
+        $(this).html("保存")
+        flag = false
+        $("table").attr("contentEditable","true")
+    }else{
+        save()
+        $(this).html("编辑")
+        flag = true
+        $("table").attr("contentEditable","false")
+    }
+
+})
+
+function save(){
+    let arr = $("table tr")
+    let data = []
+    let i=0
+    $(".kc").each((index,item)=>{
+        let bj = $(item).children("td").eq(0).html()
+        let zy = $(item).children("td").eq(2).html()
+        let is40 = $(item).children("td").eq(7).html()==""? 40:48
+        let teacher =$(item).next(".teacher").children("td").eq(1).html()
+        let js = $(item).next(".teacher").next(".js").children("td").eq(1).html()
+        //{'classname': 'UAIF1908', 'area': '205', 'stage': ['html,css(ai)'], 'long_time': [40], 'teacher': ['杨登辉']}
+        let obj = {'classname':bj,area:js,stage:[zy],long_time:[is40],teacher:[teacher]}
+        data.push(obj)
+
+    })
+    data0.data = data
+    data0=JSON.stringify(data0)
+    // {#console.log(data0)#}
+    $.ajax({
+        'url':url2,
+        type:"post",
+        data:{"data":data0},
+        success:function(data){
+            console.log(data)
+        }
+    })
+}
+
+
+</script>
 </html>

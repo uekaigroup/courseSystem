@@ -25,7 +25,7 @@ class Classes(models.Model):
         max_length=20,
         verbose_name='班级名称'
     )
-    p_id=models.ForeignKey(
+    m_id=models.ForeignKey(
         to="direction.Major",
         on_delete=models.CASCADE,
         verbose_name='班级方向'
@@ -34,7 +34,7 @@ class Classes(models.Model):
         verbose_name='班级人数',
         default=0
     )
-    room=models.ForeignKey(
+    croom=models.ForeignKey(
         to='direction.Classroom',
         on_delete=models.CASCADE,
         verbose_name='教室',
@@ -101,7 +101,7 @@ class Classes(models.Model):
         help_text='例如:ps-软件设计',
         default='暂无'
     )
-    now_week=models.IntegerField(
+    week=models.IntegerField(
         verbose_name='周数',
         default=0,
         help_text='例如:201934,表示2019年第34周'
@@ -121,13 +121,22 @@ class OutClasses(models.Model):
         max_length=20,
         verbose_name='班名'
     )
+    croom=models.CharField(
+        max_length=20,
+        verbose_name='上课地点'
+    )
     data = models.CharField(
         max_length=200,
         verbose_name='课程数据',
         help_text='例如:0-5,全栈-2(表示前五天不上，周六日上全栈课程)',
         default='暂无'
     )
-    time = models.IntegerField(
+    is_teacher2 = models.IntegerField(choices=(
+        (0, '不需要助教'),
+        (1, '必须要助教')),
+        default=0, verbose_name='是否需要助教'
+    )
+    week = models.IntegerField(
         verbose_name='周数',
         default=0,
         help_text='例如:201934,表示2019年第34周'
