@@ -196,13 +196,13 @@ def getdata(data1,week):
     return data
 
 # 获取可代课老师
-def getteacher(request,classname):
+def getteacher(request,classname,newstage):
     class_name=classes.filter(name=classname).first()
     if not class_name:
         class_name=outclasses.filter(name=classname)
         stagename = class_name.now_stage.name
     stagename=class_name.now_stage.name
-    onestage=stage.filter(name=stagename).first()
+    onestage=stage.filter(name=newstage).first()
     someteacher=teacherstage.filter(stage=onestage)
     oneclasses=classes.filter(name=classname).first()
     teacherlist=[oneclasses.now_teacher.name]
@@ -249,7 +249,10 @@ def get_N_day():
 def orderClass(classes):
     order = []
     for i in classes:
-        order.append(model.predict([[i.education, i.stu_num,i.benke_num,i.dazhuan_num,i.zhongzhuan_num,i.gaozhong_num,i.is_outside]])[0][0])
+        now_long_time=0
+        if i.now_long_time:
+            now_long_time=1
+        order.append(model.predict([[i.education, i.stu_num,i.benke_num,i.dazhuan_num,i.zhongzhuan_num,i.gaozhong_num,i.is_outside,now_long_time]])[0][0])
     sortclass = list(reversed(np.argsort(np.array(order))))
     return sortclass
 
