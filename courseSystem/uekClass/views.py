@@ -75,6 +75,7 @@ def getcourse(request):
     b = getdata(b,getWeek())
     b["data"] += a["data"]
     data = b
+    # print(data)
     ctt=CourseTimetable(week=getWeek())
     ctt.data=json.dumps(data)
     ctt.save()
@@ -112,6 +113,7 @@ def getnext2course(request,week):
 def savedata(request):
     after_data=request.POST.get('data')
     after_data=json.loads(after_data)
+    print(after_data)
     # after_data=json.loads(request.body)
     data=json.dumps(after_data)
     after_week_data=after_data["data"]
@@ -130,9 +132,9 @@ def savedata(request):
             roomid=classroom.filter(name=j["room"]).first()
             class_record.room = roomid
             class_record.long_time = 8
-            stageid=stage.filter(name=j["con"][e]).first()
-            if not stageid:
+            if len(j["con"])==0 or j["con"][e]=='':
                 continue
+            stageid=stage.filter(name=j["con"][e]).first()
             class_record.stage = stageid
             stageobj=stage.filter(name=stageid).first()
             classes.filter(name=j["class"]).update(now_stage=stageobj)
@@ -205,7 +207,7 @@ def getteacher(request,classname,newstage):
     onestage=stage.filter(name=newstage).first()
     someteacher=teacherstage.filter(stage=onestage)
     oneclasses=classes.filter(name=classname).first()
-    teacherlist=[oneclasses.now_teacher.name]
+    teacherlist=[]
     for i in someteacher:
         oneteacher=teachers.filter(name=i.teacher.name).first()
         if oneteacher.status == "00000000000000":
@@ -415,7 +417,8 @@ def orderOutside():
 
 # 对阶段完成班级和新开班级进行排课
 def orderNormal():
-    goon = classes  # 筛选符合条件班级
+    goon = classes            # 筛选符合条件班级
+    print(goon)
     next_week = getWeek()                    # 获得下周的周数
     sortList=orderClass(goon)                # 进行优先级排序获得排序下标
     class_sheet_list = []                    # 用来存放最终数据
@@ -523,7 +526,7 @@ def orderNormal():
                 class_sheet["course"].append(halfday)
         # class_a.week=week+1
         # class_a.save()
-        print(class_sheet)
+        # print(class_sheet)
         class_sheet_list.append(class_sheet)
     return class_sheet_list
 

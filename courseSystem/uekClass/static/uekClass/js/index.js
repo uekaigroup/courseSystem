@@ -202,8 +202,11 @@ $('#table').dblclick(function(event){
     }
     if(classname=='tea'){
         let classname=target.parent().prev().children().first().html()
+        let sort=parseInt(target.attr("day"))
+        let classesstage=target.parent().prev().children()[sort+2].innerHTML
+        console.log(classesstage)
         $.ajax({
-            url:'/getteacher/'+classname,
+            url:'/getteacher/'+classname+'/'+classesstage,
             type:"get",
             dataType:"json",
             success:function(data){
