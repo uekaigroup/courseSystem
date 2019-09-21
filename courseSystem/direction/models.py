@@ -37,8 +37,15 @@ class StagePriority(models.Model):
 # 教室
 class Classroom(models.Model):
     name = models.CharField(max_length=20,verbose_name="教室",unique=True)
+    status=models.IntegerField(choices=(
+        (0, '空闲'),
+        (1, '占用')),
+        default=0, verbose_name='教室情况'
+    )
     class Meta:
         verbose_name_plural = "教室表"
         verbose_name = "教室表"
     def __str__(self):
         return self.name
+
+

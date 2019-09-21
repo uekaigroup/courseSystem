@@ -149,32 +149,37 @@ class OutClasses(models.Model):
 
 # 班级信息记录表
 class ClassRecord(models.Model):
-    classes=models.ForeignKey(
-        to=Classes,
-        on_delete=models.CASCADE,
-        verbose_name='对应班级'
+    classes=models.CharField(
+        max_length=20,
+        verbose_name='班级名'
     )
-    endstages=models.CharField(
-        max_length=50,
-        verbose_name='已完成阶段',
-        default=' '
-    )
-    now_stage = models.ForeignKey(
+    stage = models.ForeignKey(
         to="direction.Stage",
         on_delete=models.CASCADE,
-        verbose_name='当前阶段',
+        verbose_name='阶段',
         default=None
     )
-    now_long_time = models.IntegerField(
-        verbose_name='当前阶段已上课时',
+    long_time = models.IntegerField(
+        verbose_name='阶段已上课时',
         default=0
     )
-    now_week = models.IntegerField(
+    week = models.IntegerField(
         verbose_name='第几周',
         default=0
     )
+    teacher=models.ForeignKey(
+        to='teachers.Teacher',
+        on_delete=models.CASCADE,
+        verbose_name='教师',
+        default=None
+    )
+    room=models.ForeignKey(
+        to='direction.Classroom',
+        on_delete=models.CASCADE,
+        verbose_name='教室',
+    )
     def __str__(self):
-        return self.classes.name
+        return self.classes
     class Meta:
         verbose_name_plural='班级每周信息'
 

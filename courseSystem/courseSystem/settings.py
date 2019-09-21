@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'teachers',
     'direction',
     'courseTimeTable',
+    'coursetable',
     'orderCla',
     'django.contrib.admin',
     'django.contrib.auth',
