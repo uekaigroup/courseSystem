@@ -75,7 +75,7 @@ def getcourse(request):
     b = getdata(b,getWeek())
     b["data"] += a["data"]
     data = b
-    # print(data)
+    print(data)
     ctt=CourseTimetable(week=getWeek())
     ctt.data=json.dumps(data)
     ctt.save()
@@ -97,7 +97,6 @@ def getnext2course(request,week):
         truestage=classes.filter(name='MUIDF1906').first().now_stage
         truetime=classes.filter(name='MUIDF1906').first().now_long_time
         # classes.filter(name='MUIDF1906').update(now_stage=truestage)
-        print('1',classes.filter(name='MUIDF1906').first().now_long_time)
         b = nosaveorder()
         a = getdata(a,week)
         b = getdata(b,week)
@@ -560,18 +559,16 @@ def nosaveorder():
         oneroom.status=1
         oneroom.save()
         for b in range(14):                             # 对14个半天进行排课
+            halfday = {}                                # 半天的阶段和老师
             if now_mode[b]=="0":                        # 如果此半天不上课则返回空数据
-                halfday = {}
                 class_sheet["course"].append(halfday)
                 continue
-            halfday = {}                                # 半天的阶段和老师
             # nowstage = class_a.now_stage  # 当前阶段
             # now_long_time = int(class_a.now_long_time) # 保证每半天的数据更新
-            nowstage=classes.filter(name='MUIDF1906').first().now_stage
+            nowstage=classes.filter(name=goon[a].name).first().now_stage
             longtime = int(stage.filter(name=nowstage.name).first().hour)  # 当前阶段总共时长
-            now_long_time=classes.filter(name='MUIDF1906').first().now_long_time
-            print('2',now_long_time)
-            now_teacher=classes.filter(name='MUIDF1906').first().now_teacher
+            now_long_time=classes.filter(name=goon[a].name).first().now_long_time
+            now_teacher=classes.filter(name=goon[a].name).first().now_teacher
             # now_teacher=class_a.now_teacher                 # 目前代课老师
             # 如果还没有进入下一个阶段
             if longtime - now_long_time >= 4:           #如果课时差值大于四
@@ -611,12 +608,12 @@ def nosaveorder():
                 # endstages=class_a.endstages.split("-")                     # 已完成阶段
                 # if endstages[0]=="暂无":
                 #     pass
-                    # class_a.endstages=class_a.now_stage.name
+                # class_a.endstages=class_a.now_stage.name
                 # else:
                 #     pass
-                    # endstages.append(class_a.now_stage.name)
-                    # new_endstages="-".join(endstages)
-                    # class_a.endstages=new_endstages
+                # endstages.append(class_a.now_stage.name)
+                # new_endstages="-".join(endstages)
+                # class_a.endstages=new_endstages
                 class_a.save()
                 class_a.now_stage = afterstage
                 class_a.save()
