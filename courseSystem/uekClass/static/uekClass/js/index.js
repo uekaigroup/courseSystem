@@ -1,5 +1,8 @@
 // {"班级":"UAIF1901","教室":"303","周数":"56","课程":"{"Python基础":"杨登辉","Python基础":"杨登辉","Python基础":"杨登辉","Python基础":"杨登辉","Python基础":"杨登辉","Python基础":"杨登辉","Python基础":"杨登辉","Python基础":"杨登辉","Python基础":"杨登辉","Python基础":"杨登辉"}"}
 
+let next2week=$('#next2week')
+let zhezhao = $(".zhezhao")
+let zhezhaotext = $(".zhezhao h4")
 
 // 渲染日期数据
 function renderDate(date){
@@ -82,12 +85,19 @@ function renderClass(arr){
     })
 }
 
+// 渲染周数
+function renderWeek(num){
+    $("#week").text(num)
+}
+
 
 //渲染课表
 function render(data){
+    // 渲染周数
+    console.log(data)
+    renderWeek(data.num)
     // 渲染日期
     renderDate(data.date)
-
     // 渲染班级
     renderClass(data.data)
 }
@@ -168,7 +178,9 @@ function addSelect(target,type,arr1){
     select.on("blur",function(){
         target.html(select.val())
     })
-    select.appendTo(target)
+    target.append(select)
+    select.focus()
+ 
 }
 
 // 修改课表内容
@@ -216,24 +228,30 @@ $('#table').dblclick(function(event){
         });
     }
 })
+    
+$(document).on("keydown",function(event){
+    
+    if(event.ctrlKey && event.code=="KeyS"){
+        event.preventDefault()
+        saveFun()
+    }
+})
+function saveFun() {
+    zhezhao.show()
+    zhezhaotext.text("保存中，请等待。。")
+    data2=JSON.stringify(data)
 
+    $.ajax({
+        url:'/savedata/',
+        type:"POST",
+        data:{data:data2},
+        success:function(){
+            zhezhao.hide()
+        }
+    })
+}
         let save=$('#save')
-        save.on('click',function () {
-            console.log(1)
-            data2=JSON.stringify(data)
-
-            $.ajax({
-                url:'/savedata/',
-                type:"POST",
-                data:{data:data2},
-                dataType:'json',
-                success:function (res) {
-                    console.log(data)
-                    console.log(123)
-                    alert(res)
-                }
-            })
-        })
+        save.on('click',saveFun)
 
         let nextweek=$('#nextweek')
         nextweek.on('click',function () {
@@ -246,8 +264,10 @@ $('#table').dblclick(function(event){
             })
         })
 
-        let next2week=$('#next2week')
+        
         next2week.on('click',function () {
+            zhezhao.show()
+            zhezhaotext.text("排课中，请等待。。")
             var d1 = new Date();
             var d2 = new Date();
             d2.setMonth(0);
@@ -260,6 +280,7 @@ $('#table').dblclick(function(event){
                 url:'/getnext2course/'+s2,
                 type:"get",
                 success:function (res) {
+                    zhezhao.hide()    
                     render(res)
                 }
             })

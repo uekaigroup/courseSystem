@@ -13,13 +13,13 @@
 <body>
     <h2 class="title">
         <img width="50" src="https://www7.53kf.com/img/upload/10198232/mobile/temp/mobile_53kf_1559615436.jpg" alt="">
-        <span id='title'>优逸客实训部第 23 周课表</span>
+        <span id='title'>优逸客实训部第 <span id='week'></span> 周课表</span>
     </h2>
     <div class="menu">
-        <div class="son" id="history" style="background-color:#C398A9;">历史</div>
-        <div class="son son1" id="nextweek" style="background-color:#93D1DE;">下</div>
-        <div class="son son1" id="next2week" style="background-color:#93D1DE;">下下</div>
-        <div class="son" id="save" style="background-color:#C398A9;">保存</div>
+        <div class="son" id="history" style="background-color:#C398A9;">history</div>
+        <div class="son son1" id="nextweek" style="background-color:#93D1DE;">prev</div>
+        <div class="son son1" id="next2week" style="background-color:#93D1DE;">next</div>
+        <div class="son" id="save" style="background-color:#C398A9;">save</div>
     </div>
     <div class="main"></div>
     <table class="table table-striped table-bordered" style="width:900px;" align="center" id="table">
@@ -46,7 +46,7 @@
             <td></td>
         </tr>
         <!-- 班级内容开始 -->
-        <tr align="center" class="zy">
+        <!-- <tr align="center" class="zy">
             <td rowspan="3" style="text-align:center;vertical-align:middle;">UAIF1907</td>
             <td>课程内容</td>
             <td>前端开发</td>
@@ -76,11 +76,15 @@
             <td>303</td>
             <td>303</td>
             <td>303</td>
-        </tr>
+        </tr> -->
     </table>
     
 
-   
+<div class="zhezhao">
+    <h4>排课中请等待。。</h4>
+    <img src="{% static 'uekClass/img/wait.jpg' %}" alt="">
+</div>
+
 </body>
 <script src="{% static 'uekClass/js/index.js' %}"></script>
 </html>
