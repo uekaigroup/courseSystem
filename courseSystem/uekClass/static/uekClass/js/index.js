@@ -94,7 +94,6 @@ function renderWeek(num){
 //渲染课表
 function render(data){
     // 渲染周数
-    console.log(data)
     renderWeek(data.num)
     // 渲染日期
     renderDate(data.date)
@@ -137,48 +136,33 @@ function addSelect(target,type,arr1){
     arr = arr1
     // 添加下拉框
     let select = $("<select>")
+    
     select.addClass('form-control')
     arr.forEach((item,index)=>{
         let option = $("<option>")
         option.html(arr[index])
+        option.val(arr[index])
         option.appendTo(select)
     })
-    select.on("input",function(){
-        if(type==0){
-            let clsname = target.attr("clsname")
-            data.data.forEach((item,index)=>{
-                if(item['class']==clsname){
-                    item['room']  = select.val()
+    
+    select.on("blur",function(){
+        index = select.parent("td").attr("day")
+        classname = select.parent("td").attr("clsname")
+        for(let item of data.data){
+            if(item['class']==classname){
+                if(type==1){
+                    item['teacher'][index] = select.val()
+                }else if(type==2){
+                    item['con'][index]=select.val()
+                }else if(type==0){
+                    item['room']=select.val()
                 }
-            })
-        }else if(type==1){
-            let clsname = target.attr("clsname")
-            let con = target.attr("con")
-            let day = target.attr("day")
-            console.log(data)
-            data.data.forEach((item,index)=>{
-                if(item['class']==clsname){
-                    item['teacher'][day]  = select.val()
-                }
-            })
-        }else if(type==2){
-            let clsname = target.attr("clsname")
-            let con = target.attr("con")
-            let day = target.attr("day")
-            data.data.forEach((item,index)=>{
-                if(item['class']==clsname){
-                    item['con'][day]  = select.val()
-                }
-            })
-
+            }
         }
         render(data)
     })
-
-    select.on("blur",function(){
-        target.html(select.val())
-    })
     target.append(select)
+    select.val(con)
     select.focus()
  
 }
@@ -195,7 +179,6 @@ $('#table').dblclick(function(event){
             dataType:"json",
             success:function(data){
                 arr = data['room_list']
-                // console.log('arr',arr)
                 addSelect(target,0,arr)
             }
         });
@@ -204,7 +187,6 @@ $('#table').dblclick(function(event){
         let classname=target.parent().prev().children().first().html()
         let sort=parseInt(target.attr("day"))
         let classesstage=target.parent().prev().children()[sort+2].innerHTML
-        console.log(classesstage)
         $.ajax({
             url:'/getteacher/'+classname+'/'+classesstage,
             type:"get",
@@ -212,7 +194,6 @@ $('#table').dblclick(function(event){
             success:function(data){
                 arr = data['teacherlist']
                 arr.push('')
-                // console.log('arr',arr)
                 addSelect(target,1,arr)
             }
         });
